@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Olympique de Marseille</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+  /* HERO */
+  .hero{position:relative;height:100svh;min-height:600px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#001229 0%,#003D7A 45%,#0077B6 75%,#009EE0 100%);}
+  .hero-bg::before{content:'';position:absolute;inset:-100%;background:repeating-linear-gradient(-55deg,transparent 0,transparent 60px,rgba(255,255,255,.025) 60px,rgba(255,255,255,.025) 62px);animation:stripes 50s linear infinite;}
+  @keyframes stripes{to{transform:translateX(124px);}}
+  .hero-wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--fd);font-size:clamp(40vw,55vw,65vw);color:rgba(255,255,255,.04);line-height:1;pointer-events:none;user-select:none;white-space:nowrap;animation:wmPulse 9s ease-in-out infinite;}
+  @keyframes wmPulse{0%,100%{opacity:.04;}50%{opacity:.07;}}
+  .hero-gradient{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,18,41,.9) 0%,rgba(0,18,41,.4) 40%,transparent 80%);}
+  .hero-content{position:relative;z-index:2;max-width:var(--max);width:100%;margin:0 auto;padding:0 2rem 5rem;}
+  .hero-tag{display:inline-flex;align-items:center;gap:.7rem;font-size:.67rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:rgba(0,158,224,.9);margin-bottom:1.2rem;animation:revealUp .8s var(--ease) both;}
+  .hero-tag::before{content:'';width:24px;height:1px;background:var(--blue);display:block;}
+  .hero-h1{font-family:var(--fd);font-size:clamp(4rem,12vw,10rem);letter-spacing:3px;line-height:.9;color:#fff;animation:revealUp .9s var(--ease) .1s both;}
+  .hero-h1 em{font-family:var(--fs);font-style:italic;color:var(--blue);display:block;font-size:.65em;}
+  .hero-sub{font-size:clamp(.9rem,1.8vw,1.05rem);color:rgba(255,255,255,.6);max-width:460px;margin:1.2rem 0 2rem;animation:revealUp 1s var(--ease) .2s both;}
+  .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;animation:revealUp 1s var(--ease) .3s both;}
+  .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.45;}
+  .hero-scroll{position:absolute;bottom:2.5rem;right:2.5rem;z-index:3;writing-mode:vertical-rl;font-size:.63rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:.6rem;}
+  .hero-scroll::after{content:'';width:1px;height:44px;background:var(--blue);display:block;animation:scrollLine 2s ease-in-out infinite;}
+  @keyframes scrollLine{0%,100%{transform:scaleY(1);opacity:1;}50%{transform:scaleY(.4);opacity:.3;}}
+
+  /* TICKER */
+  .ticker-band{background:var(--blue);padding:1.1rem 0;overflow:hidden;}
+  .ticker-track{display:flex;gap:4rem;animation:ticker 28s linear infinite;white-space:nowrap;}
+  .ticker-item{font-family:var(--fd);font-size:1.05rem;letter-spacing:3px;color:rgba(255,255,255,.85);flex-shrink:0;}
+  .ticker-sep{color:rgba(255,255,255,.35);margin:0 .5rem;}
+
+  /* NEWS GRID */
+  .news-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:1.5rem;margin-top:3rem;}
+  .news-big{position:relative;overflow:hidden;aspect-ratio:16/9;background:linear-gradient(135deg,#001229,#004080);}
+  .news-big-content{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,18,41,.95),transparent 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:2rem;}
+  .news-side{display:flex;flex-direction:column;gap:1rem;}
+  .news-small{background:var(--white);border:1px solid var(--border2);padding:1.4rem;box-shadow:var(--shadow);transition:transform .3s var(--ease),box-shadow .3s;border-left:3px solid transparent;}
+  .news-small:hover{transform:translateX(4px);box-shadow:var(--shadow2);border-left-color:var(--blue);}
+  .news-tag{font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:.4rem;display:block;}
+  .news-title{font-family:var(--fs);font-size:1rem;color:var(--navy);line-height:1.35;}
+  .news-title-light{font-family:var(--fs);font-size:1.5rem;color:#fff;line-height:1.25;margin-top:.4rem;}
+  .news-date{font-size:.72rem;color:var(--muted);margin-top:.5rem;}
+
+  /* HISTOIRE */
+  .histoire-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+  .histoire-visual{position:relative;aspect-ratio:3/4;background:linear-gradient(160deg,#001229,#003D7A,#009EE0);overflow:hidden;box-shadow:var(--shadow2);}
+  .histoire-visual::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 20px,rgba(255,255,255,.02) 20px,rgba(255,255,255,.02) 22px);}
+  .histoire-year-wm{position:absolute;bottom:1.5rem;left:1.5rem;font-family:var(--fd);font-size:6rem;color:rgba(255,255,255,.07);line-height:1;}
+  .histoire-badge{position:absolute;top:2rem;right:2rem;background:rgba(0,158,224,.15);border:1px solid var(--blue);padding:.5rem 1.1rem;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);}
+  .histoire-list{list-style:none;margin-top:2rem;display:flex;flex-direction:column;gap:.8rem;}
+  .histoire-list li{display:flex;align-items:center;gap:1rem;font-size:.9rem;color:var(--muted);}
+  .histoire-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;}
+  .histoire-list li strong{color:var(--navy);}
+
+  /* PALMARÈS */
+  .palmares-section{background:var(--navy);padding:7rem 2rem;}
+  .palmares-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.06);margin-top:3rem;}
+  .palmares-card{background:rgba(255,255,255,.03);padding:3rem 2rem;text-align:center;transition:background .3s;position:relative;overflow:hidden;}
+  .palmares-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+  .palmares-card:hover{background:rgba(255,255,255,.06);}
+  .palmares-icon{font-size:2.2rem;margin-bottom:.8rem;display:block;}
+  .palmares-num{font-family:var(--fd);font-size:4.5rem;color:#fff;line-height:1;}
+  .palmares-title{font-size:.72rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:.5rem;}
+  .palmares-year{font-size:.7rem;color:var(--blue);margin-top:.3rem;}
+  .palmares-tag{color:rgba(0,158,224,.8);}
+  .palmares-title-text{color:#fff;}
+
+  /* CTA */
+  .cta-band{position:relative;overflow:hidden;background:linear-gradient(135deg,#001F3F,#0077B6,#009EE0);padding:6rem 2rem;text-align:center;}
+  .cta-band::before{content:'OM';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--fd);font-size:30vw;color:rgba(255,255,255,.04);pointer-events:none;}
+  .cta-band h2{font-family:var(--fd);font-size:clamp(2.5rem,6vw,5rem);letter-spacing:3px;color:#fff;margin-bottom:1rem;position:relative;}
+  .cta-band p{font-size:1rem;color:rgba(255,255,255,.65);margin-bottom:2.5rem;position:relative;}
+  .cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative;}
+
+  /* ── CAROUSEL CSS-ONLY ── */
+  .slide-input{display:none;}
+  .carousel-wrap{position:relative;overflow:hidden;background:var(--white);border:1px solid var(--border2);box-shadow:var(--shadow2);}
+  .carousel-track{display:flex;transition:transform .6s var(--ease);}
+  .c-slide{min-width:100%;display:grid;grid-template-columns:1.4fr 1fr;}
+  .c-img{position:relative;overflow:hidden;min-height:400px;}
+  .c-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease);}
+  .carousel-wrap:hover .c-img img{transform:scale(1.03);}
+  .c-img-overlay{position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,rgba(240,246,250,.3));}
+  .c-body{padding:3rem;display:flex;flex-direction:column;justify-content:center;border-left:3px solid var(--blue);}
+  .c-tag{font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:.8rem;display:block;}
+  .c-title{font-family:var(--fs);font-size:clamp(1.2rem,2.5vw,1.6rem);color:var(--navy);line-height:1.3;margin-bottom:1rem;}
+  .c-text{font-size:.88rem;color:var(--muted);line-height:1.75;margin-bottom:1.2rem;flex:1;}
+  .c-date{font-size:.72rem;color:var(--muted);font-weight:500;}
+
+  /* ── CAROUSEL: Track positions ── */
+  #s1:checked ~ * .carousel-track{transform:translateX(0%);}
+  #s2:checked ~ * .carousel-track{transform:translateX(-100%);}
+  #s3:checked ~ * .carousel-track{transform:translateX(-200%);}
+  #s4:checked ~ * .carousel-track{transform:translateX(-300%);}
+
+  /* ── Dots ── */
+  .c-dots{display:flex;justify-content:center;gap:.6rem;padding:1.2rem;background:var(--bg);}
+  .c-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);cursor:pointer;border:1.5px solid var(--border);transition:all .3s var(--ease);display:block;}
+  #s1:checked ~ * .c-dots label:nth-child(1),
+  #s2:checked ~ * .c-dots label:nth-child(2),
+  #s3:checked ~ * .c-dots label:nth-child(3),
+  #s4:checked ~ * .c-dots label:nth-child(4){background:var(--blue);border-color:var(--blue);transform:scale(1.3);}
+
+  /* ── ARROWS — Fixed approach using absolute positioned labels ── */
+  .c-arrows-wrap{position:absolute;top:0;left:0;right:0;bottom:3rem;pointer-events:none;z-index:10;}
+  .c-arrow{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:48px;height:48px;
+    background:rgba(255,255,255,.95);
+    border:1px solid var(--border2);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;font-size:1.2rem;color:var(--navy);
+    pointer-events:all;
+    transition:all .3s var(--ease);
+    box-shadow:var(--shadow);
+    text-decoration:none;
+    line-height:1;
+  }
+  .c-arrow:hover{background:var(--blue);color:#fff;border-color:var(--blue);transform:translateY(-50%) scale(1.08);}
+  .c-arrow-prev{left:1rem;}
+  .c-arrow-next{right:1rem;}
+
+  /* Show/hide arrow sets per slide */
+  .arrows-s1,.arrows-s2,.arrows-s3,.arrows-s4{display:block;}
+  #s1:checked ~ * .arrows-s1{display:block;}
+  #s1:checked ~ * .arrows-s2,#s1:checked ~ * .arrows-s3,#s1:checked ~ * .arrows-s4{display:none;}
+  #s2:checked ~ * .arrows-s2{display:block;}
+  #s2:checked ~ * .arrows-s1,#s2:checked ~ * .arrows-s3,#s2:checked ~ * .arrows-s4{display:none;}
+  #s3:checked ~ * .arrows-s3{display:block;}
+  #s3:checked ~ * .arrows-s1,#s3:checked ~ * .arrows-s2,#s3:checked ~ * .arrows-s4{display:none;}
+  #s4:checked ~ * .arrows-s4{display:block;}
+  #s4:checked ~ * .arrows-s1,#s4:checked ~ * .arrows-s2,#s4:checked ~ * .arrows-s3{display:none;}
+
+  /* ── RIPPLE CLICK ANIMATION ── */
+  .ripple-overlay{
+    position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;
+  }
+  @keyframes rippleExpand{
+    0%{transform:translate(-50%,-50%) scale(0);opacity:.55;}
+    60%{opacity:.2;}
+    100%{transform:translate(-50%,-50%) scale(1);opacity:0;}
+  }
+  .ripple-circle{
+    position:absolute;
+    width:120px;height:120px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(0,158,224,.7) 0%,rgba(0,119,182,.3) 50%,transparent 100%);
+    animation:rippleExpand .7s var(--ease) forwards;
+    pointer-events:none;
+  }
+
+  /* ── FLASH BURST at click ── */
+  @keyframes flashBurst{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(0);}
+    15%{opacity:1;transform:translate(-50%,-50%) scale(.15);}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(1);}
+  }
+  .ripple-burst{
+    position:absolute;
+    width:40px;height:40px;
+    border-radius:50%;
+    border:2px solid rgba(0,158,224,.9);
+    animation:flashBurst .6s var(--ease) forwards;
+    pointer-events:none;
+  }
+
+  @media(max-width:800px){.c-slide{grid-template-columns:1fr;}.c-img{min-height:240px;}.c-body{padding:2rem;border-left:none;border-top:3px solid var(--blue);}}
+  @media(max-width:480px){.c-body{padding:1.5rem;}.c-arrow{width:38px;height:38px;font-size:.9rem;}}
+
+  @media(max-width:1024px){.histoire-grid{grid-template-columns:1fr;gap:3rem;}.palmares-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:768px){.hero-h1{font-size:clamp(3.5rem,14vw,6rem);}.hero-scroll{display:none;}.histoire-visual{aspect-ratio:4/3;}.palmares-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:480px){.hero-content{padding:0 1.5rem 4rem;}.hero-btns{flex-direction:column;}.palmares-grid{grid-template-columns:1fr;}.cta-btns{flex-direction:column;align-items:center;}}
+  </style>
+</head>
+<body>
+
+<!-- Ripple overlay -->
+<div class="ripple-overlay" id="ripple-overlay"></div>
+
+<!-- LANGUE TOGGLE — doit être le 1er enfant de body -->
+<input type="checkbox" id="lang">
+
+<!-- HAMBURGER TOGGLE -->
+<input type="checkbox" id="nav-toggle">
+
+<!-- CAROUSEL SLIDES -->
+<input type="radio" name="slide" id="s1" class="slide-input" checked>
+<input type="radio" name="slide" id="s2" class="slide-input">
+<input type="radio" name="slide" id="s3" class="slide-input">
+<input type="radio" name="slide" id="s4" class="slide-input">
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu">
+  <label for="nav-toggle" class="mobile-close-label">✕</label>
+  <a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a>
+  <a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a>
+  <a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a>
+  <a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a>
+  <a href="contact.html">Contact</a>
+  <label for="lang" class="lang-label"></label>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">OM</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active"><span class="fr">Accueil</span><span class="en">Home</span></a></li>
+      <li><a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a></li>
+      <li><a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a></li>
+      <li><a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><label for="lang" class="lang-label"></label></li>
+    </ul>
+    <label for="nav-toggle" class="hamburger">
+      <span></span><span></span><span></span>
+    </label>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <video class="hero-video" autoplay muted loop playsinline>
+    <source src="images/bolibut.mp4" type="video/mp4">
+  </video>
+  <div class="hero-wm">OM</div>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <p class="hero-tag"><span class="fr">Fondé en 1899 · Marseille, France</span><span class="en">Founded 1899 · Marseille, France</span></p>
+    <h1 class="hero-h1">
+      OLYMPIQUE
+      <em>DE MARSEILLE</em>
+    </h1>
+    <p class="hero-sub">
+      <span class="fr">Le seul club français vainqueur de la Ligue des Champions. Une passion, une ville, une légende.</span>
+      <span class="en">The only French club to win the Champions League. One passion, one city, one legend.</span>
+    </p>
+    <div class="hero-btns">
+      <a href="parallax.html" class="btn btn-primary btn-arrow"><span class="fr">Voir les trophées</span><span class="en">See trophies</span></a>
+      <a href="about.html" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.3)"><span class="fr">Notre histoire</span><span class="en">Our history</span></a>
+    </div>
+  </div>
+  <div class="hero-scroll"><span class="fr">Défiler</span><span class="en">Scroll</span></div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-band">
+  <div class="ticker-track">
+    <span class="ticker-item">ALLEZ L'OM <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item fr">10 TITRES DE CHAMPION <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item en" style="display:none!important">10 FRENCH TITLES <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">LIGUE DES CHAMPIONS 1993 <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">DROIT AU BUT <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item fr">DEPUIS 1899 <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item en" style="display:none!important">SINCE 1899 <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">ALLEZ L'OM <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item fr">10 TITRES DE CHAMPION <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item en" style="display:none!important">10 FRENCH TITLES <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">LIGUE DES CHAMPIONS 1993 <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">DROIT AU BUT <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item fr">DEPUIS 1899 <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item en" style="display:none!important">SINCE 1899 <span class="ticker-sep">✦</span></span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="section reveal">
+  <div class="section-tag"><span class="fr">Le club en chiffres</span><span class="en">Club in numbers</span></div>
+  <div class="stats-grid">
+    <div class="stat-card reveal d1">
+      <div class="stat-num">10</div>
+      <div class="stat-label"><span class="fr">Championnats de France</span><span class="en">French Championships</span></div>
+      <div class="stat-sub">1937 — 2010</div>
+    </div>
+    <div class="stat-card reveal d2">
+      <div class="stat-num">1</div>
+      <div class="stat-label"><span class="fr">Ligue des Champions</span><span class="en">Champions League</span></div>
+      <div class="stat-sub">Munich, 1993</div>
+    </div>
+    <div class="stat-card reveal d3">
+      <div class="stat-num">10</div>
+      <div class="stat-label"><span class="fr">Coupes de France</span><span class="en">French Cups</span></div>
+      <div class="stat-sub">1924 — 1989</div>
+    </div>
+    <div class="stat-card reveal d4">
+      <div class="stat-num">1899</div>
+      <div class="stat-label"><span class="fr">Année de fondation</span><span class="en">Year of foundation</span></div>
+      <div class="stat-sub"><span class="fr">125 ans d'histoire</span><span class="en">125 years of history</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CAROUSEL ACTUALITÉS -->
+<div class="section" style="padding-top:0">
+  <div class="section-tag reveal"><span class="fr">Actualités du club</span><span class="en">Club news</span></div>
+  <h2 class="section-title reveal"><span class="fr">L'OM en <em>direct</em></span><span class="en">OM <em>live</em></span></h2>
+
+  <div class="carousel-wrap reveal d1">
+    <div class="carousel-track">
+
+      <!-- SLIDE 1 -->
+      <div class="c-slide">
+        <div class="c-img">
+          <img src="images/payetbut.jpg" alt="But de Payet">
+          <div class="c-img-overlay"></div>
+        </div>
+        <div class="c-body">
+          <span class="c-tag"><span class="fr">À la une</span><span class="en">Featured</span></span>
+          <h3 class="c-title"><span class="fr">Saison 2024–25 : objectif Europa League</span><span class="en">Season 2024–25: Europa League target</span></h3>
+          <p class="c-text"><span class="fr">L'OM vise le haut du tableau et une campagne européenne mémorable cette saison au Vélodrome.</span><span class="en">OM aims for the top of the table and a memorable European campaign this season at the Vélodrome.</span></p>
+          <span class="c-date">20 Mars 2025</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 2 -->
+      <div class="c-slide">
+        <div class="c-img">
+          <img src="images/tifo.jpg" alt="OM PSG">
+          <div class="c-img-overlay"></div>
+        </div>
+        <div class="c-body">
+          <span class="c-tag"><span class="fr">Match</span><span class="en">Match</span></span>
+          <h3 class="c-title"><span class="fr">OM 3–1 PSG — Le Classique revient à Marseille</span><span class="en">OM 3–1 PSG — Le Classique returns to Marseille</span></h3>
+          <p class="c-text"><span class="fr">Une victoire éclatante devant 67 000 supporters en délire au Stade Vélodrome.</span><span class="en">A brilliant victory in front of 67,000 delirious supporters at the Stade Vélodrome.</span></p>
+          <span class="c-date">15 Mars 2025</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 3 -->
+      <div class="c-slide">
+        <div class="c-img">
+          <img src="images/velodrome2.jpg" alt="Vélodrome">
+          <div class="c-img-overlay"></div>
+        </div>
+        <div class="c-body">
+          <span class="c-tag"><span class="fr">Transfert</span><span class="en">Transfer</span></span>
+          <h3 class="c-title"><span class="fr">L'OM renforce son milieu de terrain</span><span class="en">OM strengthens its midfield</span></h3>
+          <p class="c-text"><span class="fr">Le mercato hivernal permet à l'OM d'attirer de nouveaux talents pour la deuxième partie de saison.</span><span class="en">The winter transfer window allows OM to attract new talent for the second half of the season.</span></p>
+          <span class="c-date">10 Mars 2025</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 4 -->
+      <div class="c-slide">
+        <div class="c-img">
+          <img src="images/velodrome.avif" alt="Vélodrome">
+          <div class="c-img-overlay"></div>
+        </div>
+        <div class="c-body">
+          <span class="c-tag"><span class="fr">Stade</span><span class="en">Stadium</span></span>
+          <h3 class="c-title"><span class="fr">Le Vélodrome — 67 000 supporters debout</span><span class="en">The Vélodrome — 67,000 fans on their feet</span></h3>
+          <p class="c-text"><span class="fr">Le plus grand stade de France affiche complet pour chaque match à domicile cette saison.</span><span class="en">The largest stadium in France is sold out for every home game this season.</span></p>
+          <span class="c-date">5 Mars 2025</span>
+        </div>
+      </div>
+
+    </div><!-- /.carousel-track -->
+
+    <!-- DOTS -->
+    <div class="c-dots">
+      <label for="s1" class="c-dot"></label>
+      <label for="s2" class="c-dot"></label>
+      <label for="s3" class="c-dot"></label>
+      <label for="s4" class="c-dot"></label>
+    </div>
+
+    <!-- ARROWS — one set per slide, toggled via CSS -->
+    <div class="c-arrows-wrap">
+      <!-- Arrows when slide 1 is active -->
+      <div class="arrows-s1">
+        <label for="s4" class="c-arrow c-arrow-prev">&#8592;</label>
+        <label for="s2" class="c-arrow c-arrow-next">&#8594;</label>
+      </div>
+      <!-- Arrows when slide 2 is active -->
+      <div class="arrows-s2">
+        <label for="s1" class="c-arrow c-arrow-prev">&#8592;</label>
+        <label for="s3" class="c-arrow c-arrow-next">&#8594;</label>
+      </div>
+      <!-- Arrows when slide 3 is active -->
+      <div class="arrows-s3">
+        <label for="s2" class="c-arrow c-arrow-prev">&#8592;</label>
+        <label for="s4" class="c-arrow c-arrow-next">&#8594;</label>
+      </div>
+      <!-- Arrows when slide 4 is active -->
+      <div class="arrows-s4">
+        <label for="s3" class="c-arrow c-arrow-prev">&#8592;</label>
+        <label for="s1" class="c-arrow c-arrow-next">&#8594;</label>
+      </div>
+    </div>
+
+  </div><!-- /.carousel-wrap -->
+</div>
+
+<div class="divider"></div>
+
+<!-- HISTOIRE -->
+<div class="section">
+  <div class="histoire-grid">
+    <div class="histoire-visual reveal" style="background:none;">
+      <img src="images/velodrome.avif" alt="Stade Vélodrome" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.7;">
+      <div class="histoire-year-wm">1899</div>
+      <div class="histoire-badge"><span class="fr">Fondé en 1899</span><span class="en">Founded 1899</span></div>
+    </div>
+    <div class="reveal d2">
+      <div class="section-tag"><span class="fr">Notre histoire</span><span class="en">Our history</span></div>
+      <h2 class="section-title">
+        <span class="fr">Un club, <em>une légende</em></span>
+        <span class="en">One club, <em>one legend</em></span>
+      </h2>
+      <p class="section-lead">
+        <span class="fr">L'Olympique de Marseille est bien plus qu'un club de football. C'est une institution, le symbole d'une ville entière, d'une passion qui transcende les générations.</span>
+        <span class="en">Olympique de Marseille is much more than a football club. It's an institution, the symbol of an entire city, a passion that transcends generations.</span>
+      </p>
+      <ul class="histoire-list">
+        <li><strong>1937</strong> <span class="fr">Premier titre de champion</span><span class="en">First championship title</span></li>
+        <li><strong>1993</strong> <span class="fr">Vainqueur de la Ligue des Champions</span><span class="en">Champions League winners</span></li>
+        <li><strong>2010</strong> <span class="fr">Dernier titre en Ligue 1</span><span class="en">Last Ligue 1 title</span></li>
+      </ul>
+      <a href="about.html" class="btn btn-outline btn-arrow" style="margin-top:2rem">
+        <span class="fr">Lire l'histoire complète</span>
+        <span class="en">Read the full story</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- PALMARÈS -->
+<div class="palmares-section">
+  <div style="max-width:var(--max);margin:0 auto;">
+    <div class="section-tag palmares-tag reveal"><span class="fr">Palmarès</span><span class="en">Honours</span></div>
+    <h2 class="section-title palmares-title-text reveal"><span class="fr">Titres & <em style="color:var(--blue)">gloire</em></span><span class="en">Titles & <em style="color:var(--blue)">glory</em></span></h2>
+    <div class="palmares-grid">
+      <div class="palmares-card reveal d1"><span class="palmares-icon">🏆</span><div class="palmares-num">10</div><div class="palmares-title">Ligue 1</div><div class="palmares-year">1937 – 2010</div></div>
+      <div class="palmares-card reveal d2"><span class="palmares-icon">⭐</span><div class="palmares-num">1</div><div class="palmares-title"><span class="fr">Ligue des Champions</span><span class="en">Champions League</span></div><div class="palmares-year">Munich, 1993</div></div>
+      <div class="palmares-card reveal d3"><span class="palmares-icon">🥇</span><div class="palmares-num">10</div><div class="palmares-title"><span class="fr">Coupe de France</span><span class="en">French Cup</span></div><div class="palmares-year">1924 – 1989</div></div>
+      <div class="palmares-card reveal d1"><span class="palmares-icon">🏅</span><div class="palmares-num">3</div><div class="palmares-title"><span class="fr">Coupe de la Ligue</span><span class="en">League Cup</span></div><div class="palmares-year">2010 – 2012</div></div>
+      <div class="palmares-card reveal d2"><span class="palmares-icon">🌍</span><div class="palmares-num">1</div><div class="palmares-title"><span class="fr">Supercoupe d'Europe</span><span class="en">European Super Cup</span></div><div class="palmares-year">1993</div></div>
+      <div class="palmares-card reveal d3"><span class="palmares-icon">🏟️</span><div class="palmares-num">67k</div><div class="palmares-title"><span class="fr">Capacité Vélodrome</span><span class="en">Vélodrome capacity</span></div><div class="palmares-year"><span class="fr">Le plus grand de France</span><span class="en">Largest in France</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-band">
+  <h2 class="reveal">ALLEZ L'OM !</h2>
+  <p class="reveal d1"><span class="fr">Rejoins des millions de supporters à travers le monde.</span><span class="en">Join millions of supporters around the world.</span></p>
+  <div class="cta-btns reveal d2">
+    <a href="parallax.html" class="btn btn-white"><span class="fr">Nos Trophées</span><span class="en">Our Trophies</span></a>
+    <a href="contact.html" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.3)">Contact</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <span class="footer-logo">OM</span>
+        <p class="footer-desc"><span class="fr">L'Olympique de Marseille. Le seul club français vainqueur de la Ligue des Champions. Depuis 1899.</span><span class="en">Olympique de Marseille. The only French club to win the Champions League. Since 1899.</span></p>
+      </div>
+      <div class="footer-col">
+        <h4><span class="fr">Navigation</span><span class="en">Navigation</span></h4>
+        <ul>
+          <li><a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a></li>
+          <li><a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a></li>
+          <li><a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a></li>
+          <li><a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4><span class="fr">Le Club</span><span class="en">The Club</span></h4>
+        <ul>
+          <li><a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a></li>
+          <li><a href="parallax.html"><span class="fr">Palmarès</span><span class="en">Honours</span></a></li>
+          <li><a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="contact.html"><span class="fr">Nous écrire</span><span class="en">Write to us</span></a></li>
+          <li><a href="#">contact@om.fr</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2025 Olympique de Marseille</div>
+      <div><span class="fr">Fait avec</span><span class="en">Made with</span> <span>♥</span> <span class="fr">pour l'OM</span><span class="en">for OM</span></div>
+    </div>
+  </div>
+</footer>
+
+<!-- RIPPLE ANIMATION SCRIPT -->
+<script>
+(function(){
+  const overlay = document.getElementById('ripple-overlay');
+  document.addEventListener('click', function(e){
+    // Ripple circle
+    const r = document.createElement('div');
+    r.className = 'ripple-circle';
+    r.style.left = e.clientX + 'px';
+    r.style.top  = e.clientY + 'px';
+    overlay.appendChild(r);
+
+    // Burst ring
+    const b = document.createElement('div');
+    b.className = 'ripple-burst';
+    b.style.left = e.clientX + 'px';
+    b.style.top  = e.clientY + 'px';
+    overlay.appendChild(b);
+
+    // Cleanup
+    setTimeout(()=>{ r.remove(); b.remove(); }, 800);
+  });
+})();
+</script>
+
+</body>
+</html>

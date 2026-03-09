@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Galerie — Olympique de Marseille</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+  /* Hero réduit pour que la grille soit plus haute */
+  .gallery-hero{padding:calc(var(--nav-h)+3.5rem) 2rem 3rem;text-align:center;background:linear-gradient(160deg,#001229 0%,#002a5e 60%,#001229 100%);border-bottom:1px solid var(--border2);position:relative;overflow:hidden;}
+  .gallery-hero::before{content:'GALERIE';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--fd);font-size:18vw;color:rgba(255,255,255,.04);pointer-events:none;white-space:nowrap;line-height:1;}
+  .gallery-hero .section-title{color:#fff;position:relative;}
+  .gallery-hero .section-tag{color:rgba(0,158,224,.9);position:relative;}
+  .gallery-hero .section-lead{color:rgba(255,255,255,.55);position:relative;}
+
+  /* CSS-only filter tabs via radio inputs */
+  .filter-inputs{display:none;}
+  .filter-tabs{display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap;margin:2rem 0 0;position:relative;}
+  .filter-tab{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);padding:.5rem 1.4rem;font-family:var(--fb);font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all .3s var(--ease);user-select:none;}
+  .filter-tab:hover{border-color:var(--blue);color:var(--blue);}
+
+  /* Active states */
+  #f-all:checked ~ .gallery-section .filter-tabs label[for="f-all"],
+  #f-victoires:checked ~ .gallery-section .filter-tabs label[for="f-victoires"],
+  #f-stade:checked ~ .gallery-section .filter-tabs label[for="f-stade"],
+  #f-joueurs:checked ~ .gallery-section .filter-tabs label[for="f-joueurs"],
+  #f-europe:checked ~ .gallery-section .filter-tabs label[for="f-europe"]{
+    background:var(--blue);border-color:var(--blue);color:#fff;
+  }
+
+  /* GALLERY GRID — dense auto-placement, pas de trous */
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    grid-auto-rows:300px;
+    gap:4px;
+    background:#000;
+    padding:0;
+    grid-auto-flow:dense; /* ← clé pour éviter les trous */
+  }
+  .g-item{position:relative;overflow:hidden;cursor:pointer;}
+  .g-item.span-2{grid-column:span 2;}
+  .g-item.span-tall{grid-row:span 2;}
+
+  /* Quand un filtre est actif, les items cachés sont retirés du flux */
+  .g-item{display:block;}
+  #f-victoires:checked ~ .gallery-section .g-item{display:none;}
+  #f-victoires:checked ~ .gallery-section .g-item[data-cat="victoires"]{display:block;grid-column:span 1;grid-row:span 1;}
+  #f-stade:checked ~ .gallery-section .g-item{display:none;}
+  #f-stade:checked ~ .gallery-section .g-item[data-cat="stade"]{display:block;grid-column:span 1;grid-row:span 1;}
+  #f-joueurs:checked ~ .gallery-section .g-item{display:none;}
+  #f-joueurs:checked ~ .gallery-section .g-item[data-cat="joueurs"]{display:block;grid-column:span 1;grid-row:span 1;}
+  #f-europe:checked ~ .gallery-section .g-item{display:none;}
+  #f-europe:checked ~ .gallery-section .g-item[data-cat="europe"]{display:block;grid-column:span 1;grid-row:span 1;}
+
+  /* Image dans chaque item : couvre tout */
+  .g-bg{position:absolute;inset:0;overflow:hidden;}
+  .g-bg img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s var(--ease);}
+  .g-item:hover .g-bg img{transform:scale(1.08);}
+
+  /* Gradient backgrounds fallback */
+  .g-bg-a{background:linear-gradient(135deg,#001229,#0077B6,#009EE0);}
+  .g-bg-b{background:linear-gradient(135deg,#1a0030,#4a0060,#7b2d8b);}
+  .g-bg-c{background:linear-gradient(135deg,#001229,#003058);}
+  .g-bg-d{background:linear-gradient(135deg,#0d2a0d,#1a5e1a);}
+  .g-bg-e{background:linear-gradient(135deg,#2a1a00,#c9a84c);}
+  .g-bg-f{background:linear-gradient(135deg,#1a0000,#b22222);}
+  .g-bg-g{background:linear-gradient(135deg,#001229,#009EE0);}
+  .g-bg-h{background:linear-gradient(135deg,#0d0d2a,#3d3d8b);}
+  .g-bg-i{background:linear-gradient(135deg,#001229,#003060);}
+
+  /* Overlay hover */
+  .g-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,18,41,.92) 0%,rgba(0,18,41,.2) 50%,rgba(0,18,41,.1) 100%);opacity:0;transition:opacity .4s;}
+  .g-item:hover .g-overlay{opacity:1;}
+
+  /* Permanent subtle vignette so content is always readable */
+  .g-vignette{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,18,41,.6) 0%,transparent 50%);}
+
+  /* Content always visible at bottom */
+  .g-content{position:absolute;bottom:0;left:0;right:0;padding:1.6rem;transform:translateY(6px);opacity:0;transition:all .4s var(--ease);}
+  .g-item:hover .g-content{transform:translateY(0);opacity:1;}
+  .g-tag{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:.35rem;}
+  .g-title{font-family:var(--fs);font-size:1.05rem;color:#fff;line-height:1.3;}
+  .g-year{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:.3rem;}
+
+  /* Icon watermark */
+  .g-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:5rem;opacity:.15;pointer-events:none;transition:opacity .4s,transform .4s var(--ease);}
+  .g-item:hover .g-icon{opacity:.06;transform:translate(-50%,-50%) scale(1.15);}
+
+  /* OM watermark in first cell */
+  .g-wm{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:14rem;color:rgba(255,255,255,.06);pointer-events:none;line-height:1;}
+
+  /* ── RIPPLE ── */
+  .ripple-overlay{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;}
+  @keyframes rippleExpand{
+    0%{transform:translate(-50%,-50%) scale(0);opacity:.55;}
+    60%{opacity:.2;}
+    100%{transform:translate(-50%,-50%) scale(1);opacity:0;}
+  }
+  .ripple-circle{
+    position:absolute;width:120px;height:120px;border-radius:50%;
+    background:radial-gradient(circle,rgba(0,158,224,.7) 0%,rgba(0,119,182,.3) 50%,transparent 100%);
+    animation:rippleExpand .7s var(--ease) forwards;pointer-events:none;
+  }
+  @keyframes flashBurst{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(0);}
+    15%{opacity:1;transform:translate(-50%,-50%) scale(.15);}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(1);}
+  }
+  .ripple-burst{
+    position:absolute;width:40px;height:40px;border-radius:50%;
+    border:2px solid rgba(0,158,224,.9);
+    animation:flashBurst .6s var(--ease) forwards;pointer-events:none;
+  }
+
+  @media(max-width:900px){
+    .gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:240px;}
+    .g-item.span-2{grid-column:span 1;}
+  }
+  @media(max-width:560px){
+    .gallery-grid{grid-template-columns:1fr;grid-auto-rows:220px;}
+    .g-item.span-tall{grid-row:span 1;}
+  }
+  </style>
+</head>
+<body>
+
+<div class="ripple-overlay" id="ripple-overlay"></div>
+
+<input type="checkbox" id="lang">
+<input type="checkbox" id="nav-toggle">
+
+<!-- Filter radios — AVANT .gallery-section pour les sélecteurs CSS ~ -->
+<input type="radio" name="filter" id="f-all" class="filter-inputs" checked>
+<input type="radio" name="filter" id="f-victoires" class="filter-inputs">
+<input type="radio" name="filter" id="f-stade" class="filter-inputs">
+<input type="radio" name="filter" id="f-joueurs" class="filter-inputs">
+<input type="radio" name="filter" id="f-europe" class="filter-inputs">
+
+<div class="mobile-menu">
+  <label for="nav-toggle" class="mobile-close-label">✕</label>
+  <a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a>
+  <a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a>
+  <a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a>
+  <a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a>
+  <a href="contact.html">Contact</a>
+  <label for="lang" class="lang-label"></label>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">OM</a>
+    <ul class="nav-links">
+      <li><a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a></li>
+      <li><a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a></li>
+      <li><a href="gallery.html" class="active"><span class="fr">Galerie</span><span class="en">Gallery</span></a></li>
+      <li><a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><label for="lang" class="lang-label"></label></li>
+    </ul>
+    <label for="nav-toggle" class="hamburger"><span></span><span></span><span></span></label>
+  </div>
+</nav>
+
+<!-- Tout dans .gallery-section pour que les sélecteurs ~ fonctionnent -->
+<div class="gallery-section">
+
+  <div class="gallery-hero">
+    <div class="section-tag reveal"><span class="fr">Moments iconiques</span><span class="en">Iconic moments</span></div>
+    <h1 class="section-title reveal">
+      <span class="fr">LA GALERIE <em>DE LÉGENDE</em></span>
+      <span class="en">THE LEGEND <em>GALLERY</em></span>
+    </h1>
+    <p class="section-lead reveal d1" style="margin:0 auto;text-align:center">
+      <span class="fr">Les plus grands moments de l'histoire de l'OM.</span>
+      <span class="en">The greatest moments in OM's history.</span>
+    </p>
+    <div class="filter-tabs reveal d2">
+      <label for="f-all" class="filter-tab"><span class="fr">Tout</span><span class="en">All</span></label>
+      <label for="f-victoires" class="filter-tab"><span class="fr">Victoires</span><span class="en">Victories</span></label>
+      <label for="f-stade" class="filter-tab"><span class="fr">Stade</span><span class="en">Stadium</span></label>
+      <label for="f-joueurs" class="filter-tab"><span class="fr">Joueurs</span><span class="en">Players</span></label>
+      <label for="f-europe" class="filter-tab">Europe</label>
+    </div>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="g-item span-2" data-cat="europe">
+      <div class="g-bg g-bg-a"><img src="images/ldc.jpg" alt="Ligue des Champions 1993"></div>
+      <div class="g-wm">OM</div>
+      <div class="g-vignette"></div>
+      <div class="g-overlay"></div>
+      <div class="g-content">
+        <span class="g-tag">Europe</span>
+        <div class="g-title"><span class="fr">Ligue des Champions 1993 — La nuit de Munich</span><span class="en">1993 Champions League — The Munich night</span></div>
+        <div class="g-year">26 Mai 1993</div>
+      </div>
+    </div>
+
+    <div class="g-item span-tall" data-cat="victoires">
+      <div class="g-bg g-bg-b"><img src="images/ligue1.jpg" alt="Ligue 1"></div>
+      <div class="g-icon">🏆</div>
+      <div class="g-vignette"></div>
+      <div class="g-overlay"></div>
+      <div class="g-content">
+        <span class="g-tag"><span class="fr">Victoires</span><span class="en">Victories</span></span>
+        <div class="g-title"><span class="fr">10 Titres de Champion de France</span><span class="en">10 French Champion Titles</span></div>
+        <div class="g-year">1937 – 2010</div>
+      </div>
+    </div>
+
+    <div class="g-item" data-cat="stade">
+      <div class="g-bg g-bg-c"><img src="images/velodrome.avif" alt="Vélodrome"></div>
+      <div class="g-icon">🏟️</div>
+      <div class="g-vignette"></div>
+      <div class="g-overlay"></div>
+      <div class="g-content">
+        <span class="g-tag"><span class="fr">Stade</span><span class="en">Stadium</span></span>
+        <div class="g-title"><span class="fr">Le Vélodrome — 67 000 âmes</span><span class="en">The Vélodrome — 67,000 souls</span></div>
+      </div>
+    </div>
+
+    <div class="g-item" data-cat="stade">
+      <div class="g-bg g-bg-d"><img src="images/tifo.jpg" alt="Tifo"></div>
+      <div class="g-icon">🔥</div>
+      <div class="g-vignette"></div>
+      <div class="g-overlay"></div>
+      <div class="g-content">
+        <span class="g-tag"><span class="fr">Supporters</span><span class="en">Supporters</span></span>
+        <div class="g-title"><span class="fr">L'ambiance unique du Vélodrome</span><span class="en">The unique Vélodrome atmosphere</span></div>
+      </div>
+    </div>
+
+    <div class="g-item span-2" data-cat="joueurs">
+      <div class="g-bg g-bg-e"><img src="images/papin.jpg" alt="Papin"></div>
+      <div class="g-icon">⚽</div>
+      <div class="g-vignette"></div>
+      <div class="g-overlay"></div>
+      <div class="g-content">
+        <span class="g-tag"><span class="fr">Joueurs</span><span class="en">Players</span></span>
+        <div class="g-title"><span class="fr">Deschamps, Papin, Boli — Les légendes</span><span class="en">Deschamps, Papin, Boli — The legends</span></div>
+      </div>
+    </div>
+
+    <div class="g-item" data-cat="europe">
+      <div class="g-bg g-bg-f"><img src="images/ldc2.jpg" alt="LDC"></div>
+      <div class="g-icon">🌍</div>
+      <div class="g-vignette"></div>
+      <div class="g-overlay"></div>
+      <div class="g-content">
+        <span class="g-tag">Europe</span>
+        <div class="g-title"><span class="fr">Supercoupe d'Europe 1993</span><span class="en">1993 European Super Cup</span></div>
+      </div>
+    </div>
+
+    <div class="g-item" data-cat="victoires">
+      <div class="g-bg g-bg-g"><img src="images/payetbut.jpg" alt="But"></div>
+      <div class="g-icon">🥇</div>
+      <div class="g-vignette"></div>
+      <div class="g-overlay"></div>
+      <div class="g-content">
+        <span class="g-tag"><span class="fr">Victoires</span><span class="en">Victories</span></span>
+        <div class="g-title"><span class="fr">10 Coupes de France</span><span class="en">10 French Cups</span></div>
+      </div>
+    </div>
+
+    <div class="g-item span-tall" data-cat="joueurs">
+      <div class="g-bg g-bg-h"><img src="images/niang.jpg" alt="But"></div></div>
+      <div class="g-icon">⚡</div>
+      <div class="g-vignette"></div>
+      <div class="g-overlay"></div>
+      <div class="g-content">
+        <span class="g-tag"><span class="fr">Légende</span><span class="en">Legend</span></span>
+        <div class="g-title"><span class="fr">Cantona — La légende marseillaise</span><span class="en">Cantona — The Marseille legend</span></div>
+        <div class="g-year">1988 – 1991</div>
+      </div>
+    </div>
+
+    <div class="g-item" data-cat="stade">
+      <div class="g-bg g-bg-i"><img src="images/velodrome2.jpg" alt="Vélodrome by night"></div>
+      <div class="g-icon">🌙</div>
+      <div class="g-vignette"></div>
+      <div class="g-overlay"></div>
+      <div class="g-content">
+        <span class="g-tag"><span class="fr">Stade</span><span class="en">Stadium</span></span>
+        <div class="g-title"><span class="fr">Le Vélodrome by night</span><span class="en">Vélodrome by night</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /.gallery-section -->
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div><span class="footer-logo">OM</span><p class="footer-desc"><span class="fr">L'Olympique de Marseille. Depuis 1899.</span><span class="en">Olympique de Marseille. Since 1899.</span></p></div>
+      <div class="footer-col"><h4><span class="fr">Navigation</span><span class="en">Navigation</span></h4><ul><li><a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a></li><li><a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a></li><li><a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a></li><li><a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a></li></ul></div>
+      <div class="footer-col"><h4><span class="fr">Galerie</span><span class="en">Gallery</span></h4><ul><li><a href="#"><span class="fr">Victoires</span><span class="en">Victories</span></a></li><li><a href="#">Stade</a></li><li><a href="#"><span class="fr">Joueurs</span><span class="en">Players</span></a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="contact.html"><span class="fr">Nous écrire</span><span class="en">Write to us</span></a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><div>© 2025 Olympique de Marseille</div><div><span>♥</span> OM</div></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const overlay = document.getElementById('ripple-overlay');
+  document.addEventListener('click', function(e){
+    const r = document.createElement('div');
+    r.className = 'ripple-circle';
+    r.style.left = e.clientX + 'px';
+    r.style.top  = e.clientY + 'px';
+    overlay.appendChild(r);
+    const b = document.createElement('div');
+    b.className = 'ripple-burst';
+    b.style.left = e.clientX + 'px';
+    b.style.top  = e.clientY + 'px';
+    overlay.appendChild(b);
+    setTimeout(()=>{ r.remove(); b.remove(); }, 800);
+  });
+})();
+</script>
+
+</body>
+</html>

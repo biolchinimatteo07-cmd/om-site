@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Histoire — Olympique de Marseille</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+  .about-hero{position:relative;padding:calc(var(--nav-h)+5rem) 2rem 4rem;background:linear-gradient(160deg,#001229 0%,#003058 50%,#001229 100%);overflow:hidden;}
+  .about-hero::before{content:'';position:absolute;inset:-100%;background:repeating-linear-gradient(-55deg,transparent 0,transparent 60px,rgba(255,255,255,.025) 60px,rgba(255,255,255,.025) 62px);animation:stripes 50s linear infinite;}
+  @keyframes stripes{to{transform:translateX(124px);}}
+  .about-wm{position:absolute;right:-2%;top:50%;transform:translateY(-50%);font-family:var(--fd);font-size:clamp(20vw,28vw,38vw);color:rgba(255,255,255,.04);pointer-events:none;line-height:1;}
+  .about-hero .section-title,.about-hero .section-tag{position:relative;z-index:1;}
+  .about-hero .section-title{color:#fff;}
+  .about-hero .section-lead{color:rgba(255,255,255,.6);}
+
+  /* TIMELINE */
+  .timeline-wrap{position:relative;padding:2rem 0;}
+  .timeline-wrap::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--border) 10%,var(--border) 90%,transparent);transform:translateX(-50%);}
+  .tl-item{display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;min-height:160px;margin-bottom:1px;}
+  .tl-card{background:var(--white);border:1px solid var(--border2);padding:2rem;box-shadow:var(--shadow);transition:border-color .3s,transform .3s var(--ease);}
+  .tl-card:hover{border-color:var(--border);transform:translateX(-4px);}
+  .tl-card-right{border-color:var(--border2);}
+  .tl-card-right:hover{transform:translateX(4px);}
+  .tl-empty{background:transparent;border:none;box-shadow:none;}
+  .tl-mid{display:flex;flex-direction:column;align-items:center;gap:.4rem;}
+  .tl-dot{width:14px;height:14px;border-radius:50%;background:var(--blue);border:3px solid var(--white);box-shadow:0 0 0 2px var(--blue);flex-shrink:0;transition:transform .3s var(--ease);}
+  .tl-item:hover .tl-dot{transform:scale(1.5);}
+  .tl-year{font-family:var(--fd);font-size:1rem;letter-spacing:1px;color:var(--blue);}
+  .tl-tag{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:.4rem;display:block;}
+  .tl-title{font-family:var(--fs);font-size:1.05rem;color:var(--navy);margin-bottom:.5rem;line-height:1.3;}
+  .tl-text{font-size:.83rem;color:var(--muted);line-height:1.7;}
+
+  /* LEGENDS */
+  .legends-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem;}
+  .legend-card{background:var(--white);border:1px solid var(--border2);padding:2rem;text-align:center;box-shadow:var(--shadow);transition:transform .3s var(--ease),box-shadow .3s,border-color .3s;}
+  .legend-card:hover{transform:translateY(-6px);box-shadow:var(--shadow2);border-color:var(--border);}
+  .legend-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--blue-d));margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:1.8rem;border:2px solid var(--border);transition:border-color .3s,box-shadow .3s;}
+  .legend-card:hover .legend-avatar{border-color:var(--blue);box-shadow:0 0 20px rgba(0,158,224,.2);}
+  .legend-name{font-family:var(--fd);font-size:1.2rem;letter-spacing:1px;color:var(--navy);}
+  .legend-role{font-size:.68rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-top:.3rem;}
+  .legend-years{font-size:.75rem;color:var(--muted);margin-top:.2rem;}
+
+  /* VELODROME */
+  .velo-section{background:linear-gradient(160deg,#001229,#002a5e,#004080);padding:7rem 2rem;position:relative;overflow:hidden;background-attachment:fixed;}
+  .velo-section::before{content:'';position:absolute;inset:-100%;background:repeating-linear-gradient(-55deg,transparent 0,transparent 60px,rgba(255,255,255,.02) 60px,rgba(255,255,255,.02) 62px);animation:stripes 50s linear infinite;}
+  .velo-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;position:relative;}
+  .velo-text .section-title{color:#fff;}
+  .velo-text .section-lead{color:rgba(255,255,255,.55);}
+  .velo-text .section-tag{color:rgba(0,158,224,.9);}
+  .velo-visual{aspect-ratio:1;background:rgba(0,0,0,.3);border:1px solid rgba(0,158,224,.2);display:flex;align-items:center;justify-content:center;font-size:8rem;position:relative;overflow:hidden;}
+  .velo-visual::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(0,158,224,.1),transparent 70%);}
+  .velo-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:2rem;}
+  .velo-stat{background:rgba(0,0,0,.3);border:1px solid rgba(0,158,224,.2);padding:1.3rem;text-align:center;}
+  .velo-stat-num{font-family:var(--fd);font-size:2rem;color:#fff;}
+  .velo-stat-label{font-size:.65rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,158,224,.8);margin-top:.3rem;}
+
+  @media(max-width:1024px){.legends-grid{grid-template-columns:repeat(2,1fr);}.velo-inner{grid-template-columns:1fr;gap:3rem;}.velo-visual{aspect-ratio:2/1;}}
+  @media(max-width:768px){.timeline-wrap::before{left:20px;}.tl-item{grid-template-columns:40px 1fr;gap:1rem;min-height:auto;}.tl-mid{flex-direction:row;justify-content:flex-start;}.tl-item:nth-child(odd) .tl-card:first-child,.tl-item:nth-child(even) .tl-empty{display:none;}.tl-card:hover{transform:none;}}
+  @media(max-width:600px){.legends-grid{grid-template-columns:1fr 1fr;}.velo-stats{grid-template-columns:1fr 1fr;}}
+  </style>
+</head>
+<body>
+
+<input type="checkbox" id="lang">
+<input type="checkbox" id="nav-toggle">
+
+<div class="mobile-menu">
+  <label for="nav-toggle" class="mobile-close-label">✕</label>
+  <a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a>
+  <a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a>
+  <a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a>
+  <a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a>
+  <a href="contact.html">Contact</a>
+  <label for="lang" class="lang-label"></label>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">OM</a>
+    <ul class="nav-links">
+      <li><a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a></li>
+      <li><a href="about.html" class="active"><span class="fr">Histoire</span><span class="en">History</span></a></li>
+      <li><a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a></li>
+      <li><a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><label for="lang" class="lang-label"></label></li>
+    </ul>
+    <label for="nav-toggle" class="hamburger"><span></span><span></span><span></span></label>
+  </div>
+</nav>
+
+<div class="about-hero" style="position:relative;">
+  <img src="images/tifo.jpg" alt="Tifo Vélodrome" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.18;z-index:0;">
+  <div class="about-wm">1899</div>
+  <div class="section-tag reveal"><span class="fr">Depuis 1899</span><span class="en">Since 1899</span></div>
+  <h1 class="section-title reveal">
+    <span class="fr">L'HISTOIRE <em>D'UNE LÉGENDE</em></span>
+    <span class="en">THE STORY <em>OF A LEGEND</em></span>
+  </h1>
+  <p class="section-lead reveal d1">
+    <span class="fr">Fondé le 31 août 1899, l'Olympique de Marseille est l'un des clubs les plus emblématiques et populaires du monde.</span>
+    <span class="en">Founded on August 31, 1899, Olympique de Marseille is one of the most iconic and popular clubs in the world.</span>
+  </p>
+  <div style="margin-top:2rem" class="reveal d2">
+    <a href="parallax.html" class="btn btn-primary btn-arrow"><span class="fr">Voir le palmarès</span><span class="en">See honours</span></a>
+  </div>
+</div>
+
+<div class="stats-grid reveal">
+  <div class="stat-card"><div class="stat-num">10</div><div class="stat-label"><span class="fr">Titres de Champion</span><span class="en">Champion Titles</span></div></div>
+  <div class="stat-card"><div class="stat-num">1</div><div class="stat-label"><span class="fr">C1 Européenne</span><span class="en">European C1</span></div><div class="stat-sub">1993</div></div>
+  <div class="stat-card"><div class="stat-num">67k</div><div class="stat-label"><span class="fr">Supporters Vélodrome</span><span class="en">Vélodrome capacity</span></div></div>
+  <div class="stat-card"><div class="stat-num">125</div><div class="stat-label"><span class="fr">Ans d'histoire</span><span class="en">Years of history</span></div></div>
+</div>
+
+<div class="section">
+  <div class="section-tag reveal"><span class="fr">Les grands moments</span><span class="en">The great moments</span></div>
+  <h2 class="section-title reveal">
+    <span class="fr">CHRONOLOGIE <em>HISTORIQUE</em></span>
+    <span class="en">HISTORIC <em>TIMELINE</em></span>
+  </h2>
+  <div class="timeline-wrap">
+
+    <div class="tl-item reveal">
+      <div class="tl-card">
+        <span class="tl-tag"><span class="fr">Fondation</span><span class="en">Foundation</span></span>
+        <div class="tl-title"><span class="fr">Naissance de l'OM</span><span class="en">Birth of OM</span></div>
+        <p class="tl-text"><span class="fr">René Dufaure de Montmirail fonde le club le 31 août 1899 à Marseille.</span><span class="en">René Dufaure de Montmirail founds the club on August 31, 1899 in Marseille.</span></p>
+      </div>
+      <div class="tl-mid"><div class="tl-dot"></div><div class="tl-year">1899</div></div>
+      <div class="tl-card tl-empty"></div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-card tl-empty"></div>
+      <div class="tl-mid"><div class="tl-dot"></div><div class="tl-year">1937</div></div>
+      <div class="tl-card tl-card-right">
+        <span class="tl-tag"><span class="fr">Premier titre</span><span class="en">First title</span></span>
+        <div class="tl-title"><span class="fr">Champion de France</span><span class="en">French Champion</span></div>
+        <p class="tl-text"><span class="fr">L'OM remporte son premier titre de champion de France.</span><span class="en">OM wins its first French championship title.</span></p>
+      </div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-card">
+        <span class="tl-tag"><span class="fr">Ère Tapie</span><span class="en">Tapie era</span></span>
+        <div class="tl-title"><span class="fr">Bernard Tapie transforme le club</span><span class="en">Bernard Tapie transforms the club</span></div>
+        <p class="tl-text"><span class="fr">L'homme d'affaires prend la présidence et lance l'OM vers une domination européenne sans précédent.</span><span class="en">The businessman takes over and launches OM toward unprecedented European dominance.</span></p>
+      </div>
+      <div class="tl-mid"><div class="tl-dot"></div><div class="tl-year">1986</div></div>
+      <div class="tl-card tl-empty"></div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-card tl-empty"></div>
+      <div class="tl-mid"><div class="tl-dot"></div><div class="tl-year">1993</div></div>
+      <div class="tl-card tl-card-right">
+        <span class="tl-tag"><span class="fr">Sommet européen</span><span class="en">European peak</span></span>
+        <div class="tl-title"><span class="fr">Vainqueur de la Ligue des Champions</span><span class="en">Champions League winners</span></div>
+        <p class="tl-text"><span class="fr">26 mai 1993, Munich — OM 1-0 AC Milan. Basile Boli. Pour l'éternité.</span><span class="en">May 26, 1993, Munich — OM 1-0 AC Milan. Basile Boli. Forever.</span></p>
+      </div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-card">
+        <span class="tl-tag"><span class="fr">Renaissance</span><span class="en">Renaissance</span></span>
+        <div class="tl-title"><span class="fr">Retour au sommet</span><span class="en">Return to the top</span></div>
+        <p class="tl-text"><span class="fr">L'OM retrouve son titre de champion de France après 17 ans d'attente.</span><span class="en">OM wins its French championship title again after 17 years of waiting.</span></p>
+      </div>
+      <div class="tl-mid"><div class="tl-dot"></div><div class="tl-year">2010</div></div>
+      <div class="tl-card tl-empty"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-tag reveal"><span class="fr">Joueurs légendaires</span><span class="en">Legendary players</span></div>
+  <h2 class="section-title reveal"><span class="fr">NOS <em>LÉGENDES</em></span><span class="en">OUR <em>LEGENDS</em></span></h2>
+  <div class="legends-grid">
+    <div class="legend-card reveal d1"><div class="legend-avatar">🧤</div><div class="legend-name">DESCHAMPS</div><div class="legend-role"><span class="fr">Capitaine</span><span class="en">Captain</span></div><div class="legend-years">1989 – 1994</div></div>
+    <div class="legend-card reveal d2">
+    <div class="legend-avatar" style="background:none;overflow:hidden;border:2px solid var(--border);">
+      <img src="images/papin.jpg" alt="Jean-Pierre Papin" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div class="legend-name">PAPIN</div><div class="legend-role"><span class="fr">Attaquant</span><span class="en">Forward</span></div><div class="legend-years">1986 – 1992</div></div>
+    <div class="legend-card reveal d3"><div class="legend-avatar">🏆</div><div class="legend-name">BOLI</div><div class="legend-role"><span class="fr">Défenseur</span><span class="en">Defender</span></div><div class="legend-years">1990 – 1995</div></div>
+    <div class="legend-card reveal d4"><div class="legend-avatar">⚡</div><div class="legend-name">CANTONA</div><div class="legend-role"><span class="fr">Attaquant</span><span class="en">Forward</span></div><div class="legend-years">1988 – 1991</div></div>
+  </div>
+</div>
+
+<div class="velo-section">
+  <div class="velo-inner">
+    <div class="velo-text reveal">
+      <div class="section-tag"><span class="fr">Notre temple</span><span class="en">Our temple</span></div>
+      <h2 class="section-title">
+        <span class="fr">LE STADE <em>VÉLODROME</em></span>
+        <span class="en">THE <em>VÉLODROME</em></span>
+      </h2>
+      <p class="section-lead">
+        <span class="fr">Le plus grand stade de France, une cathédrale où 67 000 supporters font trembler la ville entière à chaque match.</span>
+        <span class="en">The largest stadium in France, a cathedral where 67,000 supporters shake the entire city at every game.</span>
+      </p>
+      <div class="velo-stats">
+        <div class="velo-stat"><div class="velo-stat-num">67k</div><div class="velo-stat-label"><span class="fr">Capacité</span><span class="en">Capacity</span></div></div>
+        <div class="velo-stat"><div class="velo-stat-num">1937</div><div class="velo-stat-label"><span class="fr">Ouverture</span><span class="en">Opened</span></div></div>
+        <div class="velo-stat"><div class="velo-stat-num">N°1</div><div class="velo-stat-label"><span class="fr">De France</span><span class="en">In France</span></div></div>
+        <div class="velo-stat"><div class="velo-stat-num">2016</div><div class="velo-stat-label"><span class="fr">Rénovation</span><span class="en">Renovation</span></div></div>
+      </div>
+    </div>
+    <div class="velo-visual reveal d2" style="background:none;overflow:hidden;">
+    <img src="images/velodrome2.jpg" alt="Stade Vélodrome" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8;">
+  </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div><span class="footer-logo">OM</span><p class="footer-desc"><span class="fr">L'Olympique de Marseille. Depuis 1899.</span><span class="en">Olympique de Marseille. Since 1899.</span></p></div>
+      <div class="footer-col"><h4><span class="fr">Navigation</span><span class="en">Navigation</span></h4><ul><li><a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a></li><li><a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a></li><li><a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a></li><li><a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h4><span class="fr">Histoire</span><span class="en">History</span></h4><ul><li><a href="#"><span class="fr">Fondation 1899</span><span class="en">Foundation 1899</span></a></li><li><a href="#"><span class="fr">Ère Tapie</span><span class="en">Tapie era</span></a></li><li><a href="#"><span class="fr">Victoire 1993</span><span class="en">1993 Victory</span></a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="contact.html"><span class="fr">Nous écrire</span><span class="en">Write to us</span></a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><div>© 2025 Olympique de Marseille</div><div><span>♥</span> OM</div></div>
+  </div>
+</footer>
+
+</body>
+</html>

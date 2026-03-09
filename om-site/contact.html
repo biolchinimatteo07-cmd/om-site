@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Contact — Olympique de Marseille</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+  .contact-hero{padding:calc(var(--nav-h)+5rem) 2rem 4rem;background:var(--bg2);text-align:center;border-bottom:1px solid var(--border2);}
+  .contact-grid{display:grid;grid-template-columns:1fr 1.6fr;background:var(--white);}
+  .info-panel{background:var(--bg2);padding:4rem 3rem;border-right:1px solid var(--border2);}
+  .info-item{display:flex;gap:1.2rem;align-items:flex-start;margin-bottom:2.5rem;}
+  .info-icon{width:42px;height:42px;border:1.5px solid var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;background:var(--white);}
+  .info-label{font-size:.63rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:.3rem;}
+  .info-value{font-size:.92rem;color:var(--text);line-height:1.6;}
+  .info-sub{font-size:.78rem;color:var(--muted);margin-top:.2rem;}
+  .social-row{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.5rem;}
+  .social-link{width:38px;height:38px;border:1.5px solid var(--border2);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:.9rem;text-decoration:none;border-radius:3px;transition:all .3s var(--ease);}
+  .social-link:hover{border-color:var(--blue);background:rgba(0,158,224,.07);transform:translateY(-2px);}
+
+  .form-panel{padding:4rem 3rem;}
+  .form-title{font-family:var(--fs);font-size:1.6rem;color:var(--navy);margin-bottom:.4rem;}
+  .form-sub{font-size:.87rem;color:var(--muted);margin-bottom:2.5rem;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .form-group{margin-bottom:1.2rem;}
+  .form-group label{display:block;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;}
+  .form-group input,
+  .form-group textarea,
+  .form-group select{width:100%;padding:.8rem 1rem;background:var(--bg);border:1.5px solid var(--border2);color:var(--text);font-family:var(--fb);font-size:.9rem;outline:none;border-radius:0;transition:border-color .3s,box-shadow .3s;-webkit-appearance:none;}
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,158,224,.07);}
+  .form-group textarea{resize:vertical;min-height:120px;}
+  .form-check{display:flex;align-items:flex-start;gap:.8rem;margin:1rem 0 1.8rem;}
+  .form-check input[type=checkbox]{width:16px;height:16px;margin-top:3px;accent-color:var(--blue);flex-shrink:0;cursor:pointer;}
+  .form-check label{font-size:.8rem;color:var(--muted);line-height:1.55;cursor:pointer;}
+  .form-check label a{color:var(--blue);text-decoration:none;}
+  .submit-row{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+  .submit-btn{background:var(--blue);color:#fff;border:none;padding:1rem 2.5rem;font-family:var(--fb);font-size:.78rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .3s var(--ease);}
+  .submit-btn:hover{background:var(--blue-d);transform:translateY(-2px);box-shadow:var(--shadow);}
+  .submit-hint{font-size:.75rem;color:var(--muted);}
+
+  /* CSS-only success: use :target or checkbox hack */
+  /* We use a hidden checkbox + label submit trick */
+  #form-sent{display:none;}
+  #form-sent:checked ~ .contact-grid .form-wrap{display:none;}
+  #form-sent:checked ~ .contact-grid .success-panel{display:flex!important;}
+  .success-panel{display:none;flex-direction:column;align-items:center;justify-content:center;padding:4rem;text-align:center;}
+  .success-icon{font-size:4rem;margin-bottom:1.5rem;}
+  .success-title{font-family:var(--fd);font-size:2.5rem;letter-spacing:2px;color:var(--navy);margin-bottom:.8rem;}
+  .success-text{color:var(--muted);font-size:.95rem;line-height:1.7;}
+
+  /* Map placeholder */
+  .map-section{height:260px;background:linear-gradient(135deg,#001229,#003D7A);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+  .map-section::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0,rgba(0,158,224,.04) 0,rgba(0,158,224,.04) 1px,transparent 1px,transparent 40px),repeating-linear-gradient(90deg,rgba(0,158,224,.04) 0,rgba(0,158,224,.04) 1px,transparent 1px,transparent 40px);}
+  .map-label{position:relative;text-align:center;}
+  .map-pin{font-size:2.8rem;display:block;margin-bottom:.5rem;animation:iconFloat 3s ease-in-out infinite;}
+  .map-name{font-family:var(--fd);font-size:1.8rem;letter-spacing:3px;color:#fff;}
+  .map-addr{font-size:.83rem;color:rgba(255,255,255,.5);margin-top:.3rem;}
+
+  @media(max-width:900px){.contact-grid{grid-template-columns:1fr;}.info-panel{border-right:none;border-bottom:1px solid var(--border2);padding:3rem 2rem;}.form-panel{padding:3rem 2rem;}}
+  @media(max-width:600px){.form-row{grid-template-columns:1fr;}.submit-row{flex-direction:column;align-items:flex-start;}}
+  </style>
+</head>
+<body>
+
+<input type="checkbox" id="lang">
+<input type="checkbox" id="nav-toggle">
+<input type="checkbox" id="form-sent">
+
+<div class="mobile-menu">
+  <label for="nav-toggle" class="mobile-close-label">✕</label>
+  <a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a>
+  <a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a>
+  <a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a>
+  <a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a>
+  <a href="contact.html">Contact</a>
+  <label for="lang" class="lang-label"></label>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">OM</a>
+    <ul class="nav-links">
+      <li><a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a></li>
+      <li><a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a></li>
+      <li><a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a></li>
+      <li><a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+      <li><label for="lang" class="lang-label"></label></li>
+    </ul>
+    <label for="nav-toggle" class="hamburger"><span></span><span></span><span></span></label>
+  </div>
+</nav>
+
+<div class="contact-hero">
+  <div class="section-tag reveal"><span class="fr">Écrivez-nous</span><span class="en">Write to us</span></div>
+  <h1 class="section-title reveal" style="margin:0 auto">
+    <span class="fr">NOUS <em>CONTACTER</em></span>
+    <span class="en">CONTACT <em>US</em></span>
+  </h1>
+  <p class="section-lead reveal d1" style="margin:1rem auto 0;text-align:center">
+    <span class="fr">Une question, un partenariat ? On est là.</span>
+    <span class="en">A question, a partnership? We're here.</span>
+  </p>
+</div>
+
+<div class="contact-grid">
+  <!-- INFO -->
+  <div class="info-panel reveal">
+    <div class="section-tag"><span class="fr">Coordonnées</span><span class="en">Details</span></div>
+    <h2 style="font-family:var(--fs);font-size:1.4rem;color:var(--navy);margin-bottom:2.5rem;line-height:1.3">
+      <span class="fr">Toujours à l'écoute de notre communauté</span>
+      <span class="en">Always listening to our community</span>
+    </h2>
+    <div class="info-item">
+      <div class="info-icon">📍</div>
+      <div>
+        <div class="info-label"><span class="fr">Adresse</span><span class="en">Address</span></div>
+        <div class="info-value">Stade Vélodrome<br>3 Bd Michelet, 13008 Marseille</div>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">📞</div>
+      <div>
+        <div class="info-label"><span class="fr">Téléphone</span><span class="en">Phone</span></div>
+        <div class="info-value">+33 4 91 76 56 09</div>
+        <div class="info-sub"><span class="fr">Lun–Ven 9h–18h</span><span class="en">Mon–Fri 9am–6pm</span></div>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">✉️</div>
+      <div>
+        <div class="info-label">Email</div>
+        <div class="info-value">contact@om.fr</div>
+        <div class="info-sub"><span class="fr">Réponse sous 48h</span><span class="en">Reply within 48h</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="info-label" style="margin-bottom:.8rem"><span class="fr">Réseaux sociaux</span><span class="en">Social media</span></div>
+      <div class="social-row">
+        <a href="#" class="social-link">𝕏</a>
+        <a href="#" class="social-link">📸</a>
+        <a href="#" class="social-link">f</a>
+        <a href="#" class="social-link">▶</a>
+        <a href="#" class="social-link">♪</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-panel">
+    <div class="form-wrap">
+      <h2 class="form-title"><span class="fr">Envoyez-nous un message</span><span class="en">Send us a message</span></h2>
+      <p class="form-sub"><span class="fr">Remplissez le formulaire, nous répondons rapidement.</span><span class="en">Fill out the form, we reply quickly.</span></p>
+      <form action="#" method="post">
+        <div class="form-row">
+          <div class="form-group">
+            <label><span class="fr">Prénom</span><span class="en">First name</span></label>
+            <input type="text" required>
+          </div>
+          <div class="form-group">
+            <label><span class="fr">Nom</span><span class="en">Last name</span></label>
+            <input type="text" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" required>
+        </div>
+        <div class="form-group">
+          <label><span class="fr">Sujet</span><span class="en">Subject</span></label>
+          <select required>
+            <option value="" disabled selected><span class="fr">Choisir</span><span class="en">Choose</span></option>
+            <option><span class="fr">Question générale</span><span class="en">General question</span></option>
+            <option><span class="fr">Partenariat</span><span class="en">Partnership</span></option>
+            <option><span class="fr">Presse</span><span class="en">Press</span></option>
+            <option><span class="fr">Billetterie</span><span class="en">Ticketing</span></option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea required></textarea>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="consent" required>
+          <label for="consent">
+            <span class="fr">J'accepte que mes données soient utilisées pour traiter ma demande.</span>
+            <span class="en">I agree my data will be used to process my request.</span>
+          </label>
+        </div>
+        <div class="submit-row">
+          <!-- Pure CSS success: label acts as submit, checks #form-sent -->
+          <label for="form-sent" class="submit-btn" style="display:inline-flex;align-items:center;cursor:pointer">
+            <span class="fr">Envoyer le message</span>
+            <span class="en">Send message</span>
+          </label>
+          <span class="submit-hint"><span class="fr">Réponse sous 48h</span><span class="en">Reply within 48h</span></span>
+        </div>
+      </form>
+    </div>
+    <div class="success-panel">
+      <div class="success-icon">✅</div>
+      <div class="success-title"><span class="fr">MESSAGE ENVOYÉ !</span><span class="en">MESSAGE SENT!</span></div>
+      <p class="success-text"><span class="fr">Merci ! Nous vous répondrons dans les plus brefs délais. Allez l'OM !</span><span class="en">Thank you! We'll get back to you as soon as possible. Allez l'OM!</span></p>
+    </div>
+  </div>
+</div>
+
+<div class="map-section">
+  <div class="map-label">
+    <span class="map-pin">📍</span>
+    <div class="map-name">STADE VÉLODROME</div>
+    <div class="map-addr">Marseille, Bouches-du-Rhône, France</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div><span class="footer-logo">OM</span><p class="footer-desc"><span class="fr">L'Olympique de Marseille. Depuis 1899.</span><span class="en">Olympique de Marseille. Since 1899.</span></p></div>
+      <div class="footer-col"><h4><span class="fr">Navigation</span><span class="en">Navigation</span></h4><ul><li><a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a></li><li><a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a></li><li><a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a></li><li><a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="#">contact@om.fr</a></li><li><a href="#">+33 4 91 76 56 09</a></li></ul></div>
+      <div class="footer-col"><h4><span class="fr">Légal</span><span class="en">Legal</span></h4><ul><li><a href="#"><span class="fr">Mentions légales</span><span class="en">Legal notices</span></a></li><li><a href="#"><span class="fr">Confidentialité</span><span class="en">Privacy</span></a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><div>© 2025 Olympique de Marseille</div><div><span>♥</span> OM</div></div>
+  </div>
+</footer>
+
+</body>
+</html>

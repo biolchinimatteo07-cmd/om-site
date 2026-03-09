@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Trophées — Olympique de Marseille</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+  /* ── PARALLAX HERO ── */
+  .p-hero {
+    position:relative;
+    height:100svh; min-height:600px;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+    background:transparent;
+  }
+  .p-hero::after {
+    content:'';
+    position:fixed;
+    inset:0;
+    background: url('images/tifo.jpg') center/cover no-repeat;
+    z-index:-2;
+    transform:scale(1.08);
+  }
+  .p-hero-overlay {
+    position:absolute; inset:0; z-index:0;
+    background:linear-gradient(to bottom, rgba(0,18,41,.55) 0%, rgba(0,18,41,.75) 60%, rgba(0,18,41,.97) 100%);
+    pointer-events:none;
+  }
+  .p-stripes {
+    position:absolute; inset:-100%;
+    background:repeating-linear-gradient(-55deg,transparent 0,transparent 60px,rgba(255,255,255,.025) 60px,rgba(255,255,255,.025) 62px);
+    animation:stripes 45s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes stripes{to{transform:translateX(124px) translateY(124px);}}
+
+  .p-wm {
+    position:absolute; top:50%; left:50%;
+    z-index:1;
+    transform:translate(-50%,-50%);
+    font-family:var(--fd); font-size:clamp(35vw,50vw,60vw);
+    color:rgba(255,255,255,.04); line-height:1;
+    pointer-events:none; user-select:none;
+    animation:wmBreathe 8s ease-in-out infinite;
+  }
+  @keyframes wmBreathe{0%,100%{opacity:.04;transform:translate(-50%,-50%) scale(1);}50%{opacity:.07;transform:translate(-50%,-50%) scale(1.02);}}
+
+  .p-orb {
+    position:absolute; border-radius:50%;
+    pointer-events:none; z-index:1;
+    filter:blur(90px);
+    animation:orbDrift 14s ease-in-out infinite;
+  }
+  .p-orb-1{width:500px;height:500px;background:rgba(0,119,182,.35);top:-15%;left:-10%;animation-delay:0s;}
+  .p-orb-2{width:350px;height:350px;background:rgba(0,158,224,.2);bottom:0;right:-5%;animation-delay:5s;}
+  .p-orb-3{width:250px;height:250px;background:rgba(201,168,76,.12);top:30%;right:20%;animation-delay:9s;}
+  @keyframes orbDrift{0%,100%{transform:translate(0,0);}33%{transform:translate(25px,-35px);}66%{transform:translate(-20px,25px);}}
+
+  .p-stars {
+    position:absolute; inset:0; z-index:1;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,.6), transparent),
+      radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,.4), transparent),
+      radial-gradient(1.5px 1.5px at 45% 30%, rgba(255,255,255,.7), transparent),
+      radial-gradient(1px 1px at 60% 75%, rgba(255,255,255,.5), transparent),
+      radial-gradient(2px 2px at 75% 20%, rgba(0,158,224,.8), transparent),
+      radial-gradient(1px 1px at 85% 55%, rgba(255,255,255,.4), transparent),
+      radial-gradient(1.5px 1.5px at 92% 40%, rgba(255,255,255,.6), transparent),
+      radial-gradient(1px 1px at 35% 85%, rgba(255,255,255,.3), transparent),
+      radial-gradient(2px 2px at 55% 10%, rgba(0,158,224,.6), transparent),
+      radial-gradient(1px 1px at 70% 90%, rgba(255,255,255,.4), transparent);
+    animation:starTwinkle 4s ease-in-out infinite alternate;
+    pointer-events:none;
+  }
+  @keyframes starTwinkle{0%{opacity:.6;}100%{opacity:1;}}
+
+  /* ── CORRECTION CLÉ : padding-top pour passer sous la nav ── */
+  .p-content {
+    position:relative; z-index:3; text-align:center;
+    /* On ajoute le padding de la nav + espace supplémentaire */
+    padding:calc(var(--nav-h) + 3rem) 2rem 3rem;
+    max-width:800px; width:100%;
+    animation:revealUp .9s var(--ease) both;
+    /* Centrage vertical compensé */
+    margin-top:0;
+  }
+  .p-tag{display:inline-flex;align-items:center;gap:.6rem;font-size:.67rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:rgba(0,158,224,.9);margin-bottom:1rem;}
+  .p-tag::before{content:'';width:22px;height:1px;background:var(--blue);display:block;}
+  .p-h1{font-family:var(--fd);font-size:clamp(3.5rem,11vw,9rem);letter-spacing:4px;line-height:.9;color:#fff;text-shadow:0 0 80px rgba(0,158,224,.3);}
+  .p-h1 em{font-family:var(--fs);font-style:italic;color:var(--blue);display:block;font-size:.65em;}
+  .p-sub{font-size:clamp(.9rem,2vw,1.05rem);color:rgba(255,255,255,.6);max-width:580px;margin:1.2rem auto 0;}
+  .p-scroll{position:absolute;bottom:2rem;left:50%;z-index:3;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;font-size:.62rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);}
+  .p-scroll::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,var(--blue),transparent);animation:scrollLine 2s ease-in-out infinite;}
+  @keyframes scrollLine{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+  /* PARALLAX SECTIONS between trophies */
+  .parallax-divider {
+    height:280px;
+    position:relative;
+    overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .parallax-divider::before {
+    content:'';
+    position:absolute;inset:0;
+    background: url('images/velodrome.avif') center/cover no-repeat;
+    z-index:0;
+  }
+  .parallax-divider::after {
+    content:'';
+    position:absolute;inset:0;
+    background:rgba(0,18,41,.68);
+    z-index:1;
+  }
+  .parallax-divider-text{position:relative;z-index:2;font-family:var(--fd);font-size:clamp(3rem,8vw,7rem);letter-spacing:4px;color:rgba(255,255,255,.2);}
+
+  /* TROPHY CARDS */
+  .trophy-section{background:var(--bg);}
+  .trophy-hero-card{background:var(--white);display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border2);box-shadow:var(--shadow);}
+  .thc-visual{position:relative;overflow:hidden;background:linear-gradient(135deg,#001229,#0077B6);display:flex;align-items:center;justify-content:center;min-height:380px;padding:3rem;}
+  .thc-icon{font-size:clamp(7rem,12vw,11rem);animation:iconFloat 6s ease-in-out infinite;line-height:1;}
+  .thc-visual-num{position:absolute;bottom:1.5rem;right:2rem;font-family:var(--fd);font-size:7rem;color:rgba(255,255,255,.06);line-height:1;}
+  .thc-visual::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(0,158,224,.12),transparent 70%);}
+  .thc-content{padding:3rem;display:flex;flex-direction:column;justify-content:center;border-left:3px solid var(--blue);}
+  .thc-num{font-family:var(--fd);font-size:clamp(4rem,8vw,7rem);color:var(--navy);line-height:1;}
+  .thc-label{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:.6rem;}
+  .thc-title{font-family:var(--fs);font-size:clamp(1.4rem,3vw,2rem);color:var(--navy);margin-bottom:1rem;line-height:1.2;}
+  .thc-desc{font-size:.9rem;color:var(--muted);line-height:1.75;margin-bottom:1.5rem;}
+  .years-wrap{display:flex;flex-wrap:wrap;gap:.4rem;}
+  .year-badge{background:var(--bg);border:1px solid var(--border);padding:.2rem .6rem;font-size:.68rem;font-weight:600;letter-spacing:.06em;color:var(--blue);}
+
+  /* Minor trophies */
+  .minor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border2);}
+  .minor-card{background:var(--white);padding:2.5rem 2rem;text-align:center;transition:background .3s,transform .3s var(--ease);border-top:3px solid transparent;}
+  .minor-card:hover{background:var(--bg);transform:translateY(-4px);border-top-color:var(--blue);}
+  .minor-icon{font-size:2.5rem;margin-bottom:.8rem;display:block;}
+  .minor-num{font-family:var(--fd);font-size:3.5rem;color:var(--navy);line-height:1;}
+  .minor-title{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:.4rem;}
+
+  /* CTA BLOCK */
+  .p-cta{position:relative;overflow:hidden;background:linear-gradient(135deg,#001F3F,#0077B6,#009EE0);padding:6rem 2rem;text-align:center;}
+  .p-cta::before{content:'⭐';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:40vw;opacity:.04;pointer-events:none;}
+  .p-cta h2{font-family:var(--fd);font-size:clamp(2.5rem,6vw,5rem);letter-spacing:3px;color:#fff;margin-bottom:1rem;position:relative;}
+  .p-cta p{color:rgba(255,255,255,.6);font-size:1rem;margin-bottom:2.5rem;position:relative;}
+  .p-cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative;}
+
+  /* ── RIPPLE ── */
+  .ripple-overlay{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;}
+  @keyframes rippleExpand{
+    0%{transform:translate(-50%,-50%) scale(0);opacity:.55;}
+    60%{opacity:.2;}
+    100%{transform:translate(-50%,-50%) scale(1);opacity:0;}
+  }
+  .ripple-circle{
+    position:absolute;width:120px;height:120px;border-radius:50%;
+    background:radial-gradient(circle,rgba(0,158,224,.7) 0%,rgba(0,119,182,.3) 50%,transparent 100%);
+    animation:rippleExpand .7s var(--ease) forwards;pointer-events:none;
+  }
+  @keyframes flashBurst{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(0);}
+    15%{opacity:1;transform:translate(-50%,-50%) scale(.15);}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(1);}
+  }
+  .ripple-burst{
+    position:absolute;width:40px;height:40px;border-radius:50%;
+    border:2px solid rgba(0,158,224,.9);
+    animation:flashBurst .6s var(--ease) forwards;pointer-events:none;
+  }
+
+  @media(max-width:1024px){.trophy-hero-card{grid-template-columns:1fr;}.thc-visual{min-height:220px;}.minor-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:600px){.minor-grid{grid-template-columns:1fr 1fr;}.thc-content{padding:2rem 1.5rem;}.p-cta-btns{flex-direction:column;align-items:center;}}
+  </style>
+</head>
+<body>
+
+<div class="ripple-overlay" id="ripple-overlay"></div>
+
+<input type="checkbox" id="lang">
+<input type="checkbox" id="nav-toggle">
+
+<div class="mobile-menu">
+  <label for="nav-toggle" class="mobile-close-label">✕</label>
+  <a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a>
+  <a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a>
+  <a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a>
+  <a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a>
+  <a href="contact.html">Contact</a>
+  <label for="lang" class="lang-label"></label>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">OM</a>
+    <ul class="nav-links">
+      <li><a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a></li>
+      <li><a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a></li>
+      <li><a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a></li>
+      <li><a href="parallax.html" class="active"><span class="fr">Trophées</span><span class="en">Trophies</span></a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><label for="lang" class="lang-label"></label></li>
+    </ul>
+    <label for="nav-toggle" class="hamburger"><span></span><span></span><span></span></label>
+  </div>
+</nav>
+
+<!-- PARALLAX HERO -->
+<div class="p-hero">
+  <div class="p-hero-overlay"></div>
+  <div class="p-stripes"></div>
+  <div class="p-orb p-orb-1"></div>
+  <div class="p-orb p-orb-2"></div>
+  <div class="p-orb p-orb-3"></div>
+  <div class="p-stars"></div>
+  <div class="p-wm">OM</div>
+  <div class="p-content">
+    <p class="p-tag"><span class="fr">Palmarès officiel</span><span class="en">Official honours</span></p>
+    <h1 class="p-h1">
+      <span class="fr">PALMARÈS <em>LÉGENDAIRE</em></span>
+      <span class="en">LEGENDARY <em>HONOURS</em></span>
+    </h1>
+    <p class="p-sub">
+      <span class="fr">L'OM est le seul club français vainqueur de la Ligue des Champions. Une histoire unique dans le football mondial.</span>
+      <span class="en">OM is the only French club to win the Champions League. A unique story in world football.</span>
+    </p>
+  </div>
+  <div class="p-scroll"><span class="fr">Défiler</span><span class="en">Scroll</span></div>
+</div>
+
+<!-- TROPHY 1 — LIGUE DES CHAMPIONS -->
+<div class="trophy-section">
+  <div class="trophy-hero-card reveal">
+    <div class="thc-visual" style="background:none;">
+      <img src="images/ldc.jpg" alt="Ligue des Champions 1993" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;">
+      <div class="thc-icon" style="position:relative;z-index:1;">⭐</div>
+      <div class="thc-visual-num">1993</div>
+    </div>
+    <div class="thc-content">
+      <div class="thc-label"><span class="fr">Le Graal européen</span><span class="en">The European Grail</span></div>
+      <div class="thc-num">1</div>
+      <h2 class="thc-title"><span class="fr">Ligue des Champions</span><span class="en">Champions League</span></h2>
+      <p class="thc-desc">
+        <span class="fr">Le 26 mai 1993 à Munich, l'OM bat l'AC Milan 1-0 grâce à un but de Basile Boli. Le seul club français à avoir jamais remporté la C1.</span>
+        <span class="en">On May 26, 1993 in Munich, OM beat AC Milan 1-0 thanks to a goal by Basile Boli. The only French club to ever win the Champions League.</span>
+      </p>
+      <div class="years-wrap">
+        <span class="year-badge">Munich — 26 Mai 1993</span>
+        <span class="year-badge">vs AC Milan — 1-0</span>
+        <span class="year-badge">Basile Boli ⚽</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PARALLAX DIVIDER 1 -->
+<div class="parallax-divider">
+  <div class="parallax-divider-text">DROIT AU BUT</div>
+</div>
+
+<!-- TROPHY 2 — LIGUE 1 -->
+<div class="trophy-section">
+  <div class="trophy-hero-card reveal" style="direction:rtl">
+    <div class="thc-visual" style="background:none;">
+      <img src="images/ligue1.jpg" alt="Ligue 1" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5;">
+      <div class="thc-icon" style="position:relative;z-index:1;">🏆</div>
+      <div class="thc-visual-num">L1</div>
+    </div>
+    <div class="thc-content" style="direction:ltr;border-left:none;border-right:3px solid var(--blue)">
+      <div class="thc-label"><span class="fr">Championnat de France</span><span class="en">French Championship</span></div>
+      <div class="thc-num">10</div>
+      <h2 class="thc-title"><span class="fr">Titres en Ligue 1</span><span class="en">Ligue 1 Titles</span></h2>
+      <p class="thc-desc">
+        <span class="fr">Le club le plus titré de l'histoire du championnat de France. Dix sacres depuis 1937, une domination légendaire.</span>
+        <span class="en">The most decorated club in French championship history. Ten titles since 1937, a legendary dominance.</span>
+      </p>
+      <div class="years-wrap">
+        <span class="year-badge">1937</span><span class="year-badge">1948</span><span class="year-badge">1971</span>
+        <span class="year-badge">1972</span><span class="year-badge">1989</span><span class="year-badge">1990</span>
+        <span class="year-badge">1991</span><span class="year-badge">1992</span><span class="year-badge">1993</span>
+        <span class="year-badge">2010</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PARALLAX DIVIDER 2 -->
+<div class="parallax-divider">
+  <div class="parallax-divider-text">ALLEZ L'OM</div>
+</div>
+
+<!-- MINOR TROPHIES -->
+<div style="background:var(--bg);padding:5rem 0">
+  <div style="max-width:var(--max);margin:0 auto;padding:0 2rem">
+    <div class="section-tag reveal"><span class="fr">Autres titres</span><span class="en">Other titles</span></div>
+    <h2 class="section-title reveal"><span class="fr">Le reste <em>du palmarès</em></span><span class="en">The rest <em>of the honours</em></span></h2>
+  </div>
+  <div class="minor-grid reveal d1">
+    <div class="minor-card"><span class="minor-icon">🥇</span><div class="minor-num">10</div><div class="minor-title"><span class="fr">Coupes de France</span><span class="en">French Cups</span></div></div>
+    <div class="minor-card"><span class="minor-icon">🏅</span><div class="minor-num">3</div><div class="minor-title"><span class="fr">Coupes de la Ligue</span><span class="en">League Cups</span></div></div>
+    <div class="minor-card"><span class="minor-icon">🌍</span><div class="minor-num">1</div><div class="minor-title"><span class="fr">Supercoupe d'Europe</span><span class="en">European Super Cup</span></div></div>
+    <div class="minor-card"><span class="minor-icon">🎯</span><div class="minor-num">3</div><div class="minor-title"><span class="fr">Trophées des Champions</span><span class="en">Champions Trophies</span></div></div>
+    <div class="minor-card"><span class="minor-icon">🏟️</span><div class="minor-num">67k</div><div class="minor-title"><span class="fr">Capacité Vélodrome</span><span class="en">Vélodrome capacity</span></div></div>
+    <div class="minor-card"><span class="minor-icon">💙</span><div class="minor-num">125</div><div class="minor-title"><span class="fr">Ans d'histoire</span><span class="en">Years of history</span></div></div>
+  </div>
+</div>
+
+<!-- PARALLAX DIVIDER 3 -->
+<div class="parallax-divider">
+  <div class="parallax-divider-text">DEPUIS 1899</div>
+</div>
+
+<!-- CTA -->
+<div class="p-cta">
+  <h2 class="reveal">ALLEZ L'OM !</h2>
+  <p class="reveal d1"><span class="fr">Célèbre nos victoires avec nous.</span><span class="en">Celebrate our victories with us.</span></p>
+  <div class="p-cta-btns reveal d2">    
+    <a href="about.html" class="btn btn-white"><span class="fr">Notre histoire</span><span class="en">Our history</span></a>
+    <a href="contact.html" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.3)">Contact</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div><span class="footer-logo">OM</span><p class="footer-desc"><span class="fr">L'Olympique de Marseille. Depuis 1899.</span><span class="en">Olympique de Marseille. Since 1899.</span></p></div>
+      <div class="footer-col"><h4><span class="fr">Navigation</span><span class="en">Navigation</span></h4><ul><li><a href="index.html"><span class="fr">Accueil</span><span class="en">Home</span></a></li><li><a href="about.html"><span class="fr">Histoire</span><span class="en">History</span></a></li><li><a href="gallery.html"><span class="fr">Galerie</span><span class="en">Gallery</span></a></li><li><a href="parallax.html"><span class="fr">Trophées</span><span class="en">Trophies</span></a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h4><span class="fr">Palmarès</span><span class="en">Honours</span></h4><ul><li><a href="#"><span class="fr">Ligue des Champions</span><span class="en">Champions League</span></a></li><li><a href="#">Ligue 1</a></li><li><a href="#"><span class="fr">Coupe de France</span><span class="en">French Cup</span></a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="contact.html"><span class="fr">Nous écrire</span><span class="en">Write to us</span></a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><div>© 2025 Olympique de Marseille</div><div><span>♥</span> OM</div></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const overlay = document.getElementById('ripple-overlay');
+  document.addEventListener('click', function(e){
+    const r = document.createElement('div');
+    r.className = 'ripple-circle';
+    r.style.left = e.clientX + 'px';
+    r.style.top  = e.clientY + 'px';
+    overlay.appendChild(r);
+    const b = document.createElement('div');
+    b.className = 'ripple-burst';
+    b.style.left = e.clientX + 'px';
+    b.style.top  = e.clientY + 'px';
+    overlay.appendChild(b);
+    setTimeout(()=>{ r.remove(); b.remove(); }, 800);
+  });
+})();
+</script>
+
+</body>
+</html>
